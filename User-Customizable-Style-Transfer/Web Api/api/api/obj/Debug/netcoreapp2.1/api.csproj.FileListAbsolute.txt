@@ -1,0 +1,28 @@
+/Users/ajkoma/Documents/GitHub/Web-Application-Development/User Customizable Style Transfer /Web Api/api/api/obj/Debug/netcoreapp2.1/api.csprojAssemblyReference.cache
+/Users/ajkoma/Documents/GitHub/Web-Application-Development/User Customizable Style Transfer /Web Api/api/api/obj/Debug/netcoreapp2.1/api.csproj.CoreCompileInputs.cache
+/Users/ajkoma/Documents/GitHub/Web-Application-Development/User Customizable Style Transfer /Web Api/api/api/obj/Debug/netcoreapp2.1/api.RazorAssemblyInfo.cache
+/Users/ajkoma/Documents/GitHub/Web-Application-Development/User Customizable Style Transfer /Web Api/api/api/obj/Debug/netcoreapp2.1/api.RazorAssemblyInfo.cs
+/Users/ajkoma/Documents/GitHub/Web-Application-Development/User Customizable Style Transfer /Web Api/api/api/obj/Debug/netcoreapp2.1/api.AssemblyInfoInputs.cache
+/Users/ajkoma/Documents/GitHub/Web-Application-Development/User Customizable Style Transfer /Web Api/api/api/obj/Debug/netcoreapp2.1/api.AssemblyInfo.cs
+/Users/ajkoma/Documents/GitHub/Web-Application-Development/User Customizable Style Transfer /Web Api/api/api/bin/Debug/netcoreapp2.1/api.deps.json
+/Users/ajkoma/Documents/GitHub/Web-Application-Development/User Customizable Style Transfer /Web Api/api/api/bin/Debug/netcoreapp2.1/api.runtimeconfig.json
+/Users/ajkoma/Documents/GitHub/Web-Application-Development/User Customizable Style Transfer /Web Api/api/api/bin/Debug/netcoreapp2.1/api.runtimeconfig.dev.json
+/Users/ajkoma/Documents/GitHub/Web-Application-Development/User Customizable Style Transfer /Web Api/api/api/bin/Debug/netcoreapp2.1/api.dll
+/Users/ajkoma/Documents/GitHub/Web-Application-Development/User Customizable Style Transfer /Web Api/api/api/bin/Debug/netcoreapp2.1/api.pdb
+/Users/ajkoma/Documents/GitHub/Web-Application-Development/User Customizable Style Transfer /Web Api/api/api/obj/Debug/netcoreapp2.1/api.RazorTargetAssemblyInfo.cache
+/Users/ajkoma/Documents/GitHub/Web-Application-Development/User Customizable Style Transfer /Web Api/api/api/obj/Debug/netcoreapp2.1/api.dll
+/Users/ajkoma/Documents/GitHub/Web-Application-Development/User Customizable Style Transfer /Web Api/api/api/obj/Debug/netcoreapp2.1/api.pdb
+/Users/ajkoma/Documents/GitHub/Web-Application-Development/User-Customizable-Style-Transfer/Web Api/api/api/bin/Debug/netcoreapp2.1/api.deps.json
+/Users/ajkoma/Documents/GitHub/Web-Application-Development/User-Customizable-Style-Transfer/Web Api/api/api/bin/Debug/netcoreapp2.1/api.runtimeconfig.json
+/Users/ajkoma/Documents/GitHub/Web-Application-Development/User-Customizable-Style-Transfer/Web Api/api/api/bin/Debug/netcoreapp2.1/api.runtimeconfig.dev.json
+/Users/ajkoma/Documents/GitHub/Web-Application-Development/User-Customizable-Style-Transfer/Web Api/api/api/bin/Debug/netcoreapp2.1/api.dll
+/Users/ajkoma/Documents/GitHub/Web-Application-Development/User-Customizable-Style-Transfer/Web Api/api/api/bin/Debug/netcoreapp2.1/api.pdb
+/Users/ajkoma/Documents/GitHub/Web-Application-Development/User-Customizable-Style-Transfer/Web Api/api/api/obj/Debug/netcoreapp2.1/api.csprojAssemblyReference.cache
+/Users/ajkoma/Documents/GitHub/Web-Application-Development/User-Customizable-Style-Transfer/Web Api/api/api/obj/Debug/netcoreapp2.1/api.csproj.CoreCompileInputs.cache
+/Users/ajkoma/Documents/GitHub/Web-Application-Development/User-Customizable-Style-Transfer/Web Api/api/api/obj/Debug/netcoreapp2.1/api.RazorAssemblyInfo.cache
+/Users/ajkoma/Documents/GitHub/Web-Application-Development/User-Customizable-Style-Transfer/Web Api/api/api/obj/Debug/netcoreapp2.1/api.RazorAssemblyInfo.cs
+/Users/ajkoma/Documents/GitHub/Web-Application-Development/User-Customizable-Style-Transfer/Web Api/api/api/obj/Debug/netcoreapp2.1/api.AssemblyInfoInputs.cache
+/Users/ajkoma/Documents/GitHub/Web-Application-Development/User-Customizable-Style-Transfer/Web Api/api/api/obj/Debug/netcoreapp2.1/api.AssemblyInfo.cs
+/Users/ajkoma/Documents/GitHub/Web-Application-Development/User-Customizable-Style-Transfer/Web Api/api/api/obj/Debug/netcoreapp2.1/api.RazorTargetAssemblyInfo.cache
+/Users/ajkoma/Documents/GitHub/Web-Application-Development/User-Customizable-Style-Transfer/Web Api/api/api/obj/Debug/netcoreapp2.1/api.dll
+/Users/ajkoma/Documents/GitHub/Web-Application-Development/User-Customizable-Style-Transfer/Web Api/api/api/obj/Debug/netcoreapp2.1/api.pdb

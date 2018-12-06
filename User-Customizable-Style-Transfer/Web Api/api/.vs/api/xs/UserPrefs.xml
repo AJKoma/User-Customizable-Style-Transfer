@@ -1,0 +1,20 @@
+﻿<Properties StartupConfiguration="{33798D24-48DB-42D5-8AA5-DEEF59E23F5D}|Default">
+  <MonoDevelop.Ide.ItemProperties.api PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="api/Controllers/StyleController.cs">
+    <Files>
+      <File FileName="api/Models/Styles.cs" Line="11" Column="13" />
+      <File FileName="api/Models/StylesContext.cs" Line="13" Column="2" />
+      <File FileName="api/Controllers/StyleController.cs" Line="44" Column="29" />
+      <File FileName="api/Controllers/1.cs" Line="17" Column="25" />
+      <File FileName="api/Startup.cs" Line="19" Column="25" />
+      <File FileName="api/Program.cs" Line="11" Column="14" />
+      <File FileName="api/Properties/launchSettings.json" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+</Properties>
