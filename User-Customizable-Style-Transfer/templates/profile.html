@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %} - Personal Profile {% endblock %}
+{% block content %}
+
+<!-- <h2>Image Style Transfer :)</h2> -->
+
+<div id="Account"> 
+    <p style="font-size: 150%"><strong>Account Information</strong></p >
+    <dl style="font-size: 120%; color: rgb(63, 62, 62); overflow-wrap: break-word">
+        <dt><b>Username:</b><br>
+        {{ session_user_name }}</dt>
+        <dt><b>E-mail:</b><br>
+        {{ session_email }}</dt>
+        <dt><b>Password:</b><br>
+        {{ session_password }}</dt>
+        {% if error %}
+        <dt class=error style="color: rgba(19, 35, 47, 0.3)"><strong>Error:</strong> {{ error }} </dt>
+        {% endif %}
+    </dl> 
+
+    <label class="collapsible" >
+        Edit
+    </label>
+        
+    <div class="content">
+        <div id="editPwd">
+            <form action="{{ url_for('editPwd') }}" method="post">
+                <div class="field-wrap">
+                    <label>
+                    Current Password<span class="req">*</span>
+                    </label>
+                    <input type="password" name="password" required autocomplete="off"/>
+                </div>
+                
+                <div class="field-wrap">
+                    <label>
+                    New Password<span class="req">*</span>
+                    </label>
+                    <input type="password" name="npassword" required autocomplete="off"/>
+                </div>
+                <div class="field-wrap">
+                    <label>
+                    Confirm Password<span class="req">*</span>
+                    </label>
+                    <input type="password" name="cpassword" required autocomplete="off"/>
+                </div>
+                <button type="submit" class="button button-block" id="btn-editPwd">Confirm</button>
+            </form> 
+        </div>
+    </div>
+</div>
+
+
+<div id="personalgallery" class = "popup">
+    <p style="font-size: 150%"><strong>Recently generated</strong></p>
+    <script type="text/javascript">
+        var imgs = {{ imgfiles|safe }};
+        var container = document.getElementById('personalgallery');
+        for (var i = 0, j = imgs.length; i < j; i++) {
+            var img = document.createElement('img');
+            var a = document.createElement('a')
+            img.src = "static/img/" + imgs[i]; 
+            a.href = img.src;
+            a.id = 'imglink';
+            a.appendChild(img);
+            container.appendChild(a);
+            
+            
+        }
+        </script>    
+</div>
+
+
+{% endblock %}

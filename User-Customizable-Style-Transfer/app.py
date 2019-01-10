@@ -2,13 +2,15 @@ from __future__ import division, print_function
 # coding=utf-8
 
 # Flask utils
-from flask import Flask, redirect, url_for, request, render_template, session, escape
+from flask import Flask, flash, jsonify, redirect, url_for, request, render_template, session, escape
 from werkzeug.utils import secure_filename
 import gevent 
 from gevent.pywsgi import WSGIHandler, WSGIServer 
 from hashlib import md5
 import hashlib
 #import MySQLdb
+from flask_mail import Mail, Message
+##from flask_cors import CORS
 
 import os
 import sys
@@ -17,14 +19,21 @@ import scipy.misc
 #import matplotlib.pyplot as plt
 #from matplotlib.pyplot import imshow
 from PIL import Image
+import requests
+from io import BytesIO
 from nst_utils import *
 import numpy as np
 import tensorflow as tf
 import pymysql
+import datetime
+import random
+import string
+import json
 
-
+#%%
 os.chdir("/Users/ajkoma/Documents/GitHub/Web-Application-Development/User-Customizable-Style-Transfer")
 db = pymysql.connect("127.0.0.1","AJKoma","614114Aj","polarbears")
+g_path_all = str("default")
 
 #%% Image Reading
 def imread(path):
@@ -169,7 +178,7 @@ def total_cost(J_content, J_style, alpha = 10, beta = 40):
     return J
 
 #%%
-def model_nn(sess, train_step, input_image, J, J_content, J_style, num_iterations = 200):
+def model_nn(sess, train_step, input_image, J, J_content, J_style, num_iterations = 200, ):
     
     # Initialize global variables (you need to run the session on the initializer)
     sess.run(tf.global_variables_initializer())
@@ -196,11 +205,31 @@ def model_nn(sess, train_step, input_image, J, J_content, J_style, num_iteration
             # save current generated image in the "/output" directory
             #save_image("output/" + str(i) + ".png", generated_image)
     
-    # save last generated image
-    g_path = "static/img/generated_image.jpg"
-    save_image(g_path, generated_image)
+    # save generated image
+    if 'g_path_all' in globals():
+        global g_path_all
+        print (g_path_all) 
+    
+        file_path = str(username_session+id_generator())+'.jpg'
+        g_path = "static/img/" + file_path
+        save_image(g_path, generated_image)
+    
+        if g_path_all == "":
+            g_path_all = file_path
+        else:
+            g_path_all = g_path_all + ","+ file_path
 
-    return g_path    
+        print(g_path_all)
+    
+        cur = db.cursor()
+        cur.execute("UPDATE Users SET generated_pic = %s WHERE username = %s",(g_path_all,session['username']))
+        db.commit()
+    
+    else:
+        g_path = "static/img/generated_image.jpg"
+        save_image(g_path, generated_image)
+
+    return g_path  
 
 #%%
 model = load_vgg_model("models/imagenet-vgg-verydeep-19.mat")
@@ -227,12 +256,15 @@ def transfer(style_image, content_image):
     return result
 
 
-
+#%%
 def my_md5(pwd):
-        my_md5=hashlib.md5()
-        my_md5.update(pwd.encode('utf-8'))
-        return my_md5.hexdigest()
+    my_md5=hashlib.md5()
+    my_md5.update(pwd.encode('utf-8'))
+    return my_md5.hexdigest()
 
+#%%
+def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
+    return ''.join(random.choice(chars) for _ in range(size))
 
 #%%
 #style_image = scipy.misc.imread("images/monet.jpg")
@@ -241,15 +273,35 @@ def my_md5(pwd):
 
 #%% Define a flask app
 app = Flask(__name__)
+##CORS(app)
+
+# email configuration
+mail=Mail(app)
+app.config['MAIL_SERVER']='smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = 'xsq74185@gmail.com'
+app.config['MAIL_PASSWORD'] = 'Xsq63549347'
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+mail = Mail(app)
 
 #%%
 @app.route('/', methods=['GET'])
 def index():
     #session['username'] = "Kiran"
     if 'username' in session:
+        global username_session
+        global g_path_all
         username_session = escape(session['username']).capitalize()
+        cur = db.cursor()
+        cur.execute("SELECT generated_pic FROM Users WHERE username = %s", (session['username']))
+        g_path_all = cur.fetchone()[0]
+        
+        if g_path_all == None:
+            g_path_all = str("")
+
         return render_template('index.html', session_user_name=username_session)
-    #return redirect(url_for('login'))
+    #return (url_for('login'))
     # Main page
     return render_template('index.html')
 
@@ -268,65 +320,215 @@ def signUp():
 	cur.execute("INSERT INTO Users(username,password,email) VALUES(%s,%s,%s) ON DUPLICATE KEY update username = username ",(username,my_md5(password),email))
 	db.commit()
 	return render_template('form.html')
+
+class ServerError(Exception):pass
 	
 @app.route('/logIn', methods=['GET', 'POST'])
 def logIn():
     username  = str(request.form["lusername"])
     password  = str(request.form['lpassword'])
     cursor = db.cursor()
-    sql = "SELECT COUNT(*) FROM Users WHERE username = %s AND password = %s"
+#    sql = "SELECT COUNT(*) FROM Users WHERE username = %s AND password = %s"
+#    try:
+#        cursor.execute(sql, (username,my_md5(password)))
+#        results = cursor.fetchone()
+#        print (results)
+#
+#        if results[0]>0:
+#            session['username'] = username
+#            print('sucess')
+#            return redirect('/')
+#            #return render_template('index.html', error= None)
+#        else:
+#            #raise ServerError('Invalid username or password!')
+#            print('Username or password not match!') 
+#        
+#        
+#    except: 
+#         db.rollback()
+#    
+#    return render_template('form.html', error=error)
+    
+    if 'username' in session:
+        flash('You have already logged in')
+        return redirect('/')
+    
+    error = None
     try:
-        cursor.execute(sql, (username,my_md5(password)))
-        results = cursor.fetchone()
-        print (results)
+        if request.method == 'POST':
+            cursor.execute("SELECT COUNT(*) FROM Users WHERE username = %s AND password = %s", (username,my_md5(password)))
+            if cursor.fetchone()[0]>0:
+                session['username'] = username
+                session['password'] = my_md5(password)
+                cursor.execute("SELECT email FROM Users WHERE username = %s", (username))
+                session['email'] = cursor.fetchone()[0]
+                #flash('You were successfully logged in')
+                return redirect('/')
+            else:
+                cursor.execute("SELECT COUNT(*) FROM Users WHERE username = %s", (username))
+                if cursor.fetchone()[0]>0:
+                    raise ServerError('Invalid password!')
+                else:
+                    raise ServerError('Invalid username!')
+            
+    except ServerError as e:
+        error = str(e)
+        
+    return render_template('form.html', error=error)
 
+#%%
+@app.route("/reset")
+def reset():
+    return render_template('reset.html')
+
+@app.route('/reset', methods=['GET', 'POST'])
+def newpwd():
+    username = str(request.form["rusername"])
+    email = str(request.form["remail"])
+    # password = str(request.form["rpassword"])
+    cursor = db.cursor()
+    sql = "SELECT count(*) FROM Users WHERE username = %s and email = %s"
+    cursor.execute(sql, (username,email))
+    results = cursor.fetchone()
+    try:
         if results[0]>0:
-            session['username'] = username
-            print('sucess')
-            return redirect('/')
-            #return render_template('index.html', error= None)
+            cursor.execute("select password from Users where username = %s and email = %s",(username, email))
+            password = cursor.fetchone()[0]
+            msg = Message('Hello', sender = 'kiranhxn@gmail.com', recipients = [email])
+            msg.body = "Hello Flask message sent from Flask-Mail, your password is: %s" % password
+            mail.send(msg)
+            return render_template('update.html')
         else:
-            print('Username or password not match!') 
+            cursor.execute("SELECT COUNT(*) FROM Users WHERE username = %s or email = %s",(username, email))
+            if cursor.fetchone()[0]>0:
+                raise ServerError('Invalid username or email, please check!')
+            else:
+                raise ServerError('Invalid username and email, please sign up!')
+            
+    except ServerError as e:
+        error = str(e)
         
+    return render_template('reset.html', error=error)
+    
+@app.route('/update', methods=['GET','POST'])
+def update():
+    rusername = str(request.form["rusername"])
+    opassword = str(request.form["opassword"])
+    newpassword = str(request.form["npassword"])
+    confpassword = str(request.form["confpassword"])
+    cursor = db.cursor()
+    cursor.execute("SELECT COUNT(*) FROM Users where password = %s and username = %s",(opassword, rusername))
+    
+    try:
+        if cursor.fetchone()[0]>0:
+            if newpassword==confpassword:
+                sql = "UPDATE Users SET password = %s where password = %s and username = %s"
+                result = cursor.execute(sql,(my_md5(newpassword),opassword, rusername))
+                db.commit()
+                return render_template('form.html')
+            else: 
+                raise ServerError('New passwords do not match!')
+        else:
+            raise ServerError('Invalid username or old password!')
+    
+    except ServerError as e:
+        error = str(e)
         
-    except:
-        db.rollback()
+    return render_template('update.html', error=error)
     
-    #if 'username' in session:
-    #    return render_template('index.html')
-    
-    #error = None
-    #try:
-    #    if request.method == 'POST':
-    #        username_form  = request.form['username']
-    #        cur = db.cursor()
-    #        cur.execute("SELECT COUNT(1) FROM Users WHERE username = {};"
-    #                    .format(username_form))
-
-    #        if not cur.fetchone()[0]:
-    #            raise ServerError('Invalid username')
-
-    #        password_form  = request.form['password']
-    #        cur.execute("SELECT password FROM users WHERE password = {};"
-    #                    .format(password_form)
-
-    #        for row in cur.fetchall():
-    #            if md5(password_form).hexdigest() == row[0]:
-    #                session['username'] = request.form['username']
-    #                return redirect(url_for('index'))
-
-    #        raise ServerError('Invalid password')
-    #except ServerError as e:
-    #    error = str(e)
-
-    #return render_template('login.html', error=error)
-
 #%%
 @app.route('/logout')
 def logout():
     session.pop('username', None)
-    return render_template('index.html')
+    return redirect('/')
 
+#%%
+@app.route('/profile')
+def profile():
+    #global g_path_all
+    global files
+    files = {}
+    email_session = escape(session['email']).capitalize()
+    password_session = escape(session['password']).capitalize()
+    username_session = escape(session['username']).capitalize()
+
+    if g_path_all != str(""):
+        files = g_path_all.split(',')
+        #print (files)        
+
+#    if request.method == 'GET':
+#        data = {}
+#        try:
+#            data['username'] = session['username']
+#            data['password'] = session['password']
+#            data['email'] = session['email']
+#            
+#    #return render_template('profile.html', session_user_name = username_session, session_email = email_session, session_password = password_session)
+#S
+#        except:
+#            pass
+#        #return jsonify(data)
+    return render_template('profile.html', imgfiles = json.dumps(files), session_user_name = username_session, session_email = email_session, session_password = "*" * len(password_session))
+
+@app.route('/profile', methods=['GET','POST'])
+def editPwd():
+    password = str(request.form["password"])
+    newpassword = str(request.form["npassword"])
+    confirm = str(request.form["cpassword"])
+    username_session = escape(session['username']).capitalize()
+    email_session = escape(session['email']).capitalize()
+    password_session = escape(session['password']).capitalize() 
+    cursor = db.cursor()
+    try:
+        if request.method == 'POST':
+            if my_md5(password) == session['password'] and newpassword == confirm:
+                sql = "UPDATE Users SET password = %s WHERE username = %s"
+                cursor.execute(sql,(my_md5(newpassword),session['username']))
+                db.commit()
+                session['password'] = my_md5(newpassword)
+                password_session = escape(session['password']).capitalize()
+                return redirect('/profile')
+            else:
+                if my_md5(password) == session['password']:
+                    raise ServerError('The two passwords you typed do not match!')
+                else:
+                    raise ServerError('Wrong password!')
+            
+    except ServerError as e:
+        error = str(e)
+
+    return render_template('profile.html', error=error, imgfiles = json.dumps(files), session_user_name = username_session, session_email = email_session, session_password = "*" * len(password_session))
+
+#@app.route('/profile', methods=['GET','POST'])
+#def sendNew():
+#    email = str(request.form["email"])
+#    password_session = escape(session['password']).capitalize()
+#    
+#    msg = Message('Hello', sender = 'kiranhxn@gmail.com', recipients = [email])
+#    msg.body = "Hello Flask message sent from Flask-Mail, your confirmation number is: %s" % password_session
+#    mail.send(msg)
+#
+#    return None
+#    
+#@app.route('/profile', methods=['GET','POST'])
+#def confirmNew():
+#    email = str(request.form["email"])
+#    confirmation = str(request.form["confirmation"])
+#    username_session = escape(session['username']).capitalize()
+#    password_session = escape(session['password']).capitalize()
+#    cursor = db.cursor()
+#    try:
+#        if confirmation == password_session:
+#            sql = "update Users SET email = %s where username = %s"
+#            cursor.execute(sql,(email,username_session))
+#            db.commit()
+#        else:
+#            raise ServerError('Wrong confirmation number!')
+#
+#    except ServerError as e:
+#        error = str(e)
+#        
+#    return render_template('profile.html', error=error)
 #%%
 @app.route('/transfer', methods=['GET', 'POST'])
 def upload():
@@ -373,6 +575,21 @@ def customize():
         global style_image
         img = Image.open(file_path)
         img = img.resize((400, 300), Image.ANTIALIAS)
+        style_image = np.array(img.getdata()).reshape([300,400,3])
+        style_image = reshape_and_normalize_image(style_image)
+        return "Style Ready"
+    return None   
+
+@app.route('/choose', methods=['GET', 'POST'])
+def choose():
+    if request.method == 'POST':
+        # Get the file from post request
+        print(request.data.decode('utf-8'))
+        response = requests.get(request.data.decode('utf-8'),verify=False)
+        img = Image.open(BytesIO(response.content))
+        img = img.resize((400, 300), Image.ANTIALIAS)
+        
+        global style_image
         style_image = np.array(img.getdata()).reshape([300,400,3])
         style_image = reshape_and_normalize_image(style_image)
         return "Style Ready"

@@ -28,24 +28,16 @@
     </h3>
 </div>
 
+<script src="{{ url_for('static', filename='js/option.js') }}" type="text/javascript"></script>
 <div id="gallery">
-    <p style="font-size: 150%"><strong>Choose one style.</strong></p>
-    <img src="https://localhost:5001/api/Style/1/pic" /> 
-    <img src="https://localhost:5001/api/Style/2/pic" /> 
-    <img src="https://localhost:5001/api/Style/3/pic" /> 
-    <img src="https://localhost:5001/api/Style/4/pic" /> 
-    <img src="https://localhost:5001/api/Style/5/pic" /> 
-    <img src="https://localhost:5001/api/Style/6/pic" /> 
-    <img src="https://localhost:5001/api/Style/7/pic" /> 
-    <img src="https://localhost:5001/api/Style/8/pic" /> 
-    <img src="https://localhost:5001/api/Style/9/pic" /> 
-    <img src="https://localhost:5001/api/Style/10/pic" /> 
-    <img src="https://localhost:5001/api/Style/11/pic" /> 
-    <img src="https://localhost:5001/api/Style/12/pic" /> 
-    <img src="https://localhost:5001/api/Style/13/pic" /> 
-    <img src="https://localhost:5001/api/Style/14/pic" /> 
-    <img src="https://localhost:5001/api/Style/15/pic" /> 
+    <p style="font-size: 150%"><strong>Choose one style and </strong> <button type="button" class="btn btn-primary btn-lg " id="btn-choose">Confirm!</button> </p>
+    <p style="font-size: 120%"><strong>Or pick one artist.</strong>
+        <select id="artist-select" name="artistlist">
+        <option>All</option>
+        </select>  
+    </p >
 </div>
+
 
 <div id="customize">
     <p style="font-size: 150%"><strong>Customize your own style.</strong></p>

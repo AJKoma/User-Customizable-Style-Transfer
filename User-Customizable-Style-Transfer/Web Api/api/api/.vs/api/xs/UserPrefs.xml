@@ -3,11 +3,13 @@
   <MonoDevelop.Ide.Workbench ActiveDocument="Controllers/StyleController.cs">
     <Files>
       <File FileName="Startup.cs" Line="7" Column="25" />
-      <File FileName="Program.cs" Line="1" Column="1" />
+      <File FileName="Program.cs" Line="24" Column="2" />
       <File FileName="appsettings.Development.json" Line="1" Column="1" />
       <File FileName="appsettings.json" Line="1" Column="1" />
-      <File FileName="Controllers/StyleController.cs" Line="64" Column="1" />
+      <File FileName="Controllers/StyleController.cs" Line="16" Column="6" />
       <File FileName="Models/Styles.cs" Line="16" Column="1" />
+      <File FileName="Properties/launchSettings.json" Line="1" Column="1" />
+      <File FileName="Models/StylesContext.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

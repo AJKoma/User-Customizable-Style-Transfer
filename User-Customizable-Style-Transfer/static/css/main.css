@@ -1,4 +1,4 @@
-div#upload, #customize {
+div#upload, #customize, #Account {
     float:left;
     clear:left;
     background: #c1bdba;
@@ -24,11 +24,37 @@ div#gallery {
 
 div#gallery > img {
     
-    margin:2.5px auto;
-    height: 50%;
+    margin:2.5px;
+    height: 40%;
     width: 32%;
     flex-grow: 1;
     object-fit: cover;
+    overflow: auto;
+
+}
+
+div#personalgallery {
+    float: right;
+    width: 72%;
+    height: 85%;
+    background: #F8F8F8;
+    padding: 40px;
+    margin: 10px auto;
+    border-radius: 4px;
+    box-shadow: 0 4px 10px 4px rgba(19, 35, 47, 0.3);
+    flex-wrap: wrap;
+    overflow: auto;
+}
+
+#imglink > img {
+    
+    margin:2.5px ;
+    height: 40%;
+    width: 32%;
+    flex-grow: 1;
+    object-fit: cover;
+    overflow: auto;
+
 }
 
 .selected {
@@ -59,7 +85,7 @@ input[type="file"] {
     display: none;
 }
 
-.upload-label{
+.upload-label, .collapsible{
     display: inline-block;
     padding: 12px 30px;
     background: rgb(30, 88, 77);
@@ -70,7 +96,7 @@ input[type="file"] {
     border-radius: 4px; 
 }
 
-.upload-label:hover{
+.upload-label:hover, .collapsible:hover{
     background: #34495E;
     color: #39D2B4;
 }
@@ -107,6 +133,29 @@ input[type="file"] {
     background-repeat: no-repeat;
     background-position: center;
 }
+
+
+
+  
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+.active, .collapsible:hover {
+    background-color: #ccc;
+}
+  
+/* Style the collapsible content. Note: hidden by default */
+.content {
+    display: none;
+    overflow: hidden;
+    background-color: #f1f1f1;
+    float: left;
+    clear:left;
+    padding: 10px;
+    border-radius: 2px;
+    box-shadow: 0 2px 5px 2px rgba(19, 35, 47, 0.3);
+}
+
+
+
 
 /* .overlay {
     height: 100%;

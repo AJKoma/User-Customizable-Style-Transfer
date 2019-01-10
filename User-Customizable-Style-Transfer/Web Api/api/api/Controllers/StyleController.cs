@@ -6,13 +6,19 @@ using api.Models;
 using System.Web.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Web;
+using Microsoft.AspNetCore.Cors;
+using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
+using HttpGetAttribute = Microsoft.AspNetCore.Mvc.HttpGetAttribute;
+
+
 
 
 namespace api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class StyleController : ControllerBase
+    [EnableCors("AllowSpecificOrigin")]
+    public class StyleController : ControllerBase 
     {
         Styles[] info = new Styles[]{
             new Styles { ID = 1, Artist="Fujishima-Takeji", Filepath="img/fujishima-takeji-sunrise-over-the-eastern-sea.jpg", Style = "sunrise-over-the-eastern-sea" },
@@ -20,8 +26,8 @@ namespace api.Controllers
             new Styles { ID = 3, Artist="Georges-Barque", Filepath="img/georges-barque-glass-on-a-table.jpg", Style = "glass-on-a-table" },
             new Styles { ID = 4, Artist="Katsushika-Hokusai", Filepath="img/katsushika-hokusai-fuji-mountains-in-clear-weather.jpg", Style = "fuji-mountains-in-clear-weather" },
             new Styles { ID = 5, Artist="Katsushika-Hokusai", Filepath="img/katsushika-hokusai-the-wave.jpg", Style = "the-wave" },
-            new Styles { ID = 6, Artist="Claude-monet", Filepath="img/monet-sunset-in-venice.jpg", Style = "sunset-in-venice" },
-            new Styles { ID = 7, Artist="Claude-monet", Filepath="img/monet-the-poppy-field.jpg", Style = "the-poppy-field" },
+            new Styles { ID = 6, Artist="Claude-Monet", Filepath="img/monet-sunset-in-venice.jpg", Style = "sunset-in-venice" },
+            new Styles { ID = 7, Artist="Claude-Monet", Filepath="img/monet-the-poppy-field.jpg", Style = "the-poppy-field" },
             new Styles { ID = 8, Artist="Pablo-Picasso", Filepath="img/picasso-blue-nude.jpg", Style = "blue-nude" },
             new Styles { ID = 9, Artist="Pablo-Picasso", Filepath="img/picasso-crucifixion.jpg", Style = "crucifixion" },
             new Styles { ID = 10, Artist="Pablo-Picasso", Filepath="img/picasso-guernica.jpg", Style = "guernica" },
@@ -36,12 +42,14 @@ namespace api.Controllers
 
 
         [HttpGet]
+        [EnableCors("AllowSpecificOrigin")]
         public IEnumerable<Styles> Get()
         {
             return info;
         }
 
-
+        [HttpGet]
+        [EnableCors("AllowSpecificOrigin")]
         [Route("{id}/pic")]
         // [HttpGet("{id}", Name ="get style")]
         public IActionResult Get(int id)
@@ -55,6 +63,8 @@ namespace api.Controllers
 
         }
 
+        [HttpGet]
+        [EnableCors("AllowSpecificOrigin")]
         [Route("{id}/info")]
         public IActionResult Get(long id)
         {
